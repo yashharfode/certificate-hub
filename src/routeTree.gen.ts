@@ -12,9 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppTeamRouteImport } from './routes/_app.team'
 import { Route as AppStudioRouteImport } from './routes/_app.studio'
+import { Route as AppHackathonsRouteImport } from './routes/_app.hackathons'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppCertificatesRouteImport } from './routes/_app.certificates'
+import { Route as AppCategoriesRouteImport } from './routes/_app.categories'
 import { Route as AppBulkRouteImport } from './routes/_app.bulk'
 import { Route as AppCertificatesIdRouteImport } from './routes/_app.certificates.$id'
 
@@ -32,9 +35,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTeamRoute = AppTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppStudioRoute = AppStudioRouteImport.update({
   id: '/studio',
   path: '/studio',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHackathonsRoute = AppHackathonsRouteImport.update({
+  id: '/hackathons',
+  path: '/hackathons',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -45,6 +58,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
 const AppCertificatesRoute = AppCertificatesRouteImport.update({
   id: '/certificates',
   path: '/certificates',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCategoriesRoute = AppCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => AppRoute,
 } as any)
 const AppBulkRoute = AppBulkRouteImport.update({
@@ -62,18 +80,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bulk': typeof AppBulkRoute
+  '/categories': typeof AppCategoriesRoute
   '/certificates': typeof AppCertificatesRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/hackathons': typeof AppHackathonsRoute
   '/studio': typeof AppStudioRoute
+  '/team': typeof AppTeamRoute
   '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bulk': typeof AppBulkRoute
+  '/categories': typeof AppCategoriesRoute
   '/certificates': typeof AppCertificatesRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/hackathons': typeof AppHackathonsRoute
   '/studio': typeof AppStudioRoute
+  '/team': typeof AppTeamRoute
   '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesById {
@@ -82,9 +106,12 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/_app/bulk': typeof AppBulkRoute
+  '/_app/categories': typeof AppCategoriesRoute
   '/_app/certificates': typeof AppCertificatesRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/hackathons': typeof AppHackathonsRoute
   '/_app/studio': typeof AppStudioRoute
+  '/_app/team': typeof AppTeamRoute
   '/_app/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRouteTypes {
@@ -93,18 +120,24 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bulk'
+    | '/categories'
     | '/certificates'
     | '/dashboard'
+    | '/hackathons'
     | '/studio'
+    | '/team'
     | '/certificates/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/bulk'
+    | '/categories'
     | '/certificates'
     | '/dashboard'
+    | '/hackathons'
     | '/studio'
+    | '/team'
     | '/certificates/$id'
   id:
     | '__root__'
@@ -112,9 +145,12 @@ export interface FileRouteTypes {
     | '/_app'
     | '/auth'
     | '/_app/bulk'
+    | '/_app/categories'
     | '/_app/certificates'
     | '/_app/dashboard'
+    | '/_app/hackathons'
     | '/_app/studio'
+    | '/_app/team'
     | '/_app/certificates/$id'
   fileRoutesById: FileRoutesById
 }
@@ -147,11 +183,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/team': {
+      id: '/_app/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AppTeamRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/studio': {
       id: '/_app/studio'
       path: '/studio'
       fullPath: '/studio'
       preLoaderRoute: typeof AppStudioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/hackathons': {
+      id: '/_app/hackathons'
+      path: '/hackathons'
+      fullPath: '/hackathons'
+      preLoaderRoute: typeof AppHackathonsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -166,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/certificates'
       fullPath: '/certificates'
       preLoaderRoute: typeof AppCertificatesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/categories': {
+      id: '/_app/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof AppCategoriesRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/bulk': {
@@ -199,16 +256,22 @@ const AppCertificatesRouteWithChildren = AppCertificatesRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppBulkRoute: typeof AppBulkRoute
+  AppCategoriesRoute: typeof AppCategoriesRoute
   AppCertificatesRoute: typeof AppCertificatesRouteWithChildren
   AppDashboardRoute: typeof AppDashboardRoute
+  AppHackathonsRoute: typeof AppHackathonsRoute
   AppStudioRoute: typeof AppStudioRoute
+  AppTeamRoute: typeof AppTeamRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppBulkRoute: AppBulkRoute,
+  AppCategoriesRoute: AppCategoriesRoute,
   AppCertificatesRoute: AppCertificatesRouteWithChildren,
   AppDashboardRoute: AppDashboardRoute,
+  AppHackathonsRoute: AppHackathonsRoute,
   AppStudioRoute: AppStudioRoute,
+  AppTeamRoute: AppTeamRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
