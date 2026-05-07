@@ -14,6 +14,9 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppStudioRouteImport } from './routes/_app.studio'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCertificatesRouteImport } from './routes/_app.certificates'
+import { Route as AppBulkRouteImport } from './routes/_app.bulk'
+import { Route as AppCertificatesIdRouteImport } from './routes/_app.certificates.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -39,33 +42,80 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCertificatesRoute = AppCertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBulkRoute = AppBulkRouteImport.update({
+  id: '/bulk',
+  path: '/bulk',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCertificatesIdRoute = AppCertificatesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppCertificatesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bulk': typeof AppBulkRoute
+  '/certificates': typeof AppCertificatesRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
   '/studio': typeof AppStudioRoute
+  '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bulk': typeof AppBulkRoute
+  '/certificates': typeof AppCertificatesRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
   '/studio': typeof AppStudioRoute
+  '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_app/bulk': typeof AppBulkRoute
+  '/_app/certificates': typeof AppCertificatesRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/studio': typeof AppStudioRoute
+  '/_app/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/studio'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/bulk'
+    | '/certificates'
+    | '/dashboard'
+    | '/studio'
+    | '/certificates/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/studio'
-  id: '__root__' | '/' | '/_app' | '/auth' | '/_app/dashboard' | '/_app/studio'
+  to:
+    | '/'
+    | '/auth'
+    | '/bulk'
+    | '/certificates'
+    | '/dashboard'
+    | '/studio'
+    | '/certificates/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/auth'
+    | '/_app/bulk'
+    | '/_app/certificates'
+    | '/_app/dashboard'
+    | '/_app/studio'
+    | '/_app/certificates/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -111,15 +161,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/certificates': {
+      id: '/_app/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof AppCertificatesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/bulk': {
+      id: '/_app/bulk'
+      path: '/bulk'
+      fullPath: '/bulk'
+      preLoaderRoute: typeof AppBulkRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/certificates/$id': {
+      id: '/_app/certificates/$id'
+      path: '/$id'
+      fullPath: '/certificates/$id'
+      preLoaderRoute: typeof AppCertificatesIdRouteImport
+      parentRoute: typeof AppCertificatesRoute
+    }
   }
 }
 
+interface AppCertificatesRouteChildren {
+  AppCertificatesIdRoute: typeof AppCertificatesIdRoute
+}
+
+const AppCertificatesRouteChildren: AppCertificatesRouteChildren = {
+  AppCertificatesIdRoute: AppCertificatesIdRoute,
+}
+
+const AppCertificatesRouteWithChildren = AppCertificatesRoute._addFileChildren(
+  AppCertificatesRouteChildren,
+)
+
 interface AppRouteChildren {
+  AppBulkRoute: typeof AppBulkRoute
+  AppCertificatesRoute: typeof AppCertificatesRouteWithChildren
   AppDashboardRoute: typeof AppDashboardRoute
   AppStudioRoute: typeof AppStudioRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBulkRoute: AppBulkRoute,
+  AppCertificatesRoute: AppCertificatesRouteWithChildren,
   AppDashboardRoute: AppDashboardRoute,
   AppStudioRoute: AppStudioRoute,
 }
