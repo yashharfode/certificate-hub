@@ -9,38 +9,173 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppTeamRouteImport } from './routes/_app.team'
+import { Route as AppStudioRouteImport } from './routes/_app.studio'
+import { Route as AppHackathonsRouteImport } from './routes/_app.hackathons'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCertificatesRouteImport } from './routes/_app.certificates'
+import { Route as AppCategoriesRouteImport } from './routes/_app.categories'
+import { Route as AppBulkRouteImport } from './routes/_app.bulk'
+import { Route as AppCertificatesIdRouteImport } from './routes/_app.certificates.$id'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTeamRoute = AppTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStudioRoute = AppStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHackathonsRoute = AppHackathonsRouteImport.update({
+  id: '/hackathons',
+  path: '/hackathons',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCertificatesRoute = AppCertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCategoriesRoute = AppCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBulkRoute = AppBulkRouteImport.update({
+  id: '/bulk',
+  path: '/bulk',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCertificatesIdRoute = AppCertificatesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppCertificatesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/bulk': typeof AppBulkRoute
+  '/categories': typeof AppCategoriesRoute
+  '/certificates': typeof AppCertificatesRouteWithChildren
+  '/dashboard': typeof AppDashboardRoute
+  '/hackathons': typeof AppHackathonsRoute
+  '/studio': typeof AppStudioRoute
+  '/team': typeof AppTeamRoute
+  '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/bulk': typeof AppBulkRoute
+  '/categories': typeof AppCategoriesRoute
+  '/certificates': typeof AppCertificatesRouteWithChildren
+  '/dashboard': typeof AppDashboardRoute
+  '/hackathons': typeof AppHackathonsRoute
+  '/studio': typeof AppStudioRoute
+  '/team': typeof AppTeamRoute
+  '/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_app/bulk': typeof AppBulkRoute
+  '/_app/categories': typeof AppCategoriesRoute
+  '/_app/certificates': typeof AppCertificatesRouteWithChildren
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/hackathons': typeof AppHackathonsRoute
+  '/_app/studio': typeof AppStudioRoute
+  '/_app/team': typeof AppTeamRoute
+  '/_app/certificates/$id': typeof AppCertificatesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/bulk'
+    | '/categories'
+    | '/certificates'
+    | '/dashboard'
+    | '/hackathons'
+    | '/studio'
+    | '/team'
+    | '/certificates/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/bulk'
+    | '/categories'
+    | '/certificates'
+    | '/dashboard'
+    | '/hackathons'
+    | '/studio'
+    | '/team'
+    | '/certificates/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/auth'
+    | '/_app/bulk'
+    | '/_app/categories'
+    | '/_app/certificates'
+    | '/_app/dashboard'
+    | '/_app/hackathons'
+    | '/_app/studio'
+    | '/_app/team'
+    | '/_app/certificates/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +183,104 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/team': {
+      id: '/_app/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AppTeamRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/studio': {
+      id: '/_app/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof AppStudioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/hackathons': {
+      id: '/_app/hackathons'
+      path: '/hackathons'
+      fullPath: '/hackathons'
+      preLoaderRoute: typeof AppHackathonsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/certificates': {
+      id: '/_app/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof AppCertificatesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/categories': {
+      id: '/_app/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof AppCategoriesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/bulk': {
+      id: '/_app/bulk'
+      path: '/bulk'
+      fullPath: '/bulk'
+      preLoaderRoute: typeof AppBulkRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/certificates/$id': {
+      id: '/_app/certificates/$id'
+      path: '/$id'
+      fullPath: '/certificates/$id'
+      preLoaderRoute: typeof AppCertificatesIdRouteImport
+      parentRoute: typeof AppCertificatesRoute
+    }
   }
 }
 
+interface AppCertificatesRouteChildren {
+  AppCertificatesIdRoute: typeof AppCertificatesIdRoute
+}
+
+const AppCertificatesRouteChildren: AppCertificatesRouteChildren = {
+  AppCertificatesIdRoute: AppCertificatesIdRoute,
+}
+
+const AppCertificatesRouteWithChildren = AppCertificatesRoute._addFileChildren(
+  AppCertificatesRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppBulkRoute: typeof AppBulkRoute
+  AppCategoriesRoute: typeof AppCategoriesRoute
+  AppCertificatesRoute: typeof AppCertificatesRouteWithChildren
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppHackathonsRoute: typeof AppHackathonsRoute
+  AppStudioRoute: typeof AppStudioRoute
+  AppTeamRoute: typeof AppTeamRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppBulkRoute: AppBulkRoute,
+  AppCategoriesRoute: AppCategoriesRoute,
+  AppCertificatesRoute: AppCertificatesRouteWithChildren,
+  AppDashboardRoute: AppDashboardRoute,
+  AppHackathonsRoute: AppHackathonsRoute,
+  AppStudioRoute: AppStudioRoute,
+  AppTeamRoute: AppTeamRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
