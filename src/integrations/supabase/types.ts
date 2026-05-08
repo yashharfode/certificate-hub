@@ -43,15 +43,19 @@ export type Database = {
       }
       certificates: {
         Row: {
+          assets: Json
           category_id: string | null
           certificate_id: string
           created_at: string
           created_by: string | null
           custom_fields: Json
+          description: string | null
           design_snapshot: Json
+          event_name: string | null
           hackathon_id: string | null
           id: string
           issue_date: string
+          partners: Json
           project_name: string | null
           recipient_email: string | null
           recipient_name: string
@@ -62,15 +66,19 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assets?: Json
           category_id?: string | null
           certificate_id: string
           created_at?: string
           created_by?: string | null
           custom_fields?: Json
+          description?: string | null
           design_snapshot?: Json
+          event_name?: string | null
           hackathon_id?: string | null
           id?: string
           issue_date?: string
+          partners?: Json
           project_name?: string | null
           recipient_email?: string | null
           recipient_name: string
@@ -81,15 +89,19 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assets?: Json
           category_id?: string | null
           certificate_id?: string
           created_at?: string
           created_by?: string | null
           custom_fields?: Json
+          description?: string | null
           design_snapshot?: Json
+          event_name?: string | null
           hackathon_id?: string | null
           id?: string
           issue_date?: string
+          partners?: Json
           project_name?: string | null
           recipient_email?: string | null
           recipient_name?: string
