@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { useEffect, useState } from "react";
-import { Award, LayoutDashboard, FileStack, Trophy, Tags, Users, Sparkles, LogOut, Menu, X } from "lucide-react";
+import { Award, LayoutDashboard, Trophy, Tags, Users, Sparkles, LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
