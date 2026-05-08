@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, owner: false },
   { to: "/studio", label: "Studio", icon: Sparkles, owner: false },
-  { to: "/bulk", label: "Bulk Generate", icon: FileStack, owner: false },
-  { to: "/certificates", label: "Certificates", icon: Award, owner: false },
+  { to: "/certificates", label: "All Certificates", icon: Award, owner: false },
   { to: "/hackathons", label: "Hackathons", icon: Trophy, owner: false },
   { to: "/categories", label: "Categories", icon: Tags, owner: false },
   { to: "/team", label: "Team", icon: Users, owner: true },
