@@ -12,6 +12,14 @@ export interface CertData {
   signatureTitle?: string;
   description?: string;
   organization?: string;
+  eventName?: string;
+  assets?: {
+    logo?: string;
+    msmeLogo?: string;
+    stamp?: string;
+    signatureImage?: string;
+  };
+  partners?: { label?: string; prefix?: string; logo?: string }[];
 }
 
 interface Props {
