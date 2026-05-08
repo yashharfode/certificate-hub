@@ -102,9 +102,9 @@ function Studio() {
       signature_title: form.signatureTitle,
       description: form.description || null,
       event_name: form.eventName || null,
-      assets,
-      partners,
-      design_snapshot: certData,
+      assets: assets as any,
+      partners: partners as any,
+      design_snapshot: certData as any,
     });
     if (error) { toast.error(error.message); return; }
     toast.success("Saved to cloud");
