@@ -229,7 +229,7 @@ function Studio() {
         template_id: form.templateId, issue_date: form.issueDate,
         signature_name: form.signatureName, signature_title: form.signatureTitle,
         description: form.description || null, event_name: form.eventName || null,
-        assets, partners, design_snapshot: data,
+        assets: assets as any, partners: partners as any, design_snapshot: data as any,
       });
       root.unmount();
       setProgress({ done: i + 1, total: rows.length, label: r.name });
