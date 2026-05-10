@@ -55,20 +55,37 @@ function ResetPasswordPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md glass rounded-2xl p-8 shadow-elegant">
         <div className="text-center mb-6">
-          <div className="display text-2xl font-bold tracking-widest gradient-gold-text">DEVLYNIX</div>
+          <div className="display text-2xl font-bold tracking-widest gradient-gold-text">
+            DEVLYNIX
+          </div>
           <div className="text-xs text-muted-foreground tracking-[0.25em] mt-1">RESET PASSWORD</div>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <Label>New password</Label>
-            <Input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input
+              type="password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
           <div>
             <Label>Confirm password</Label>
-            <Input type="password" required minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            <Input
+              type="password"
+              required
+              minLength={8}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
           </div>
-          <Button disabled={busy} className="w-full bg-gold text-primary-foreground hover:bg-gold/90">
+          <Button
+            disabled={busy}
+            className="w-full bg-gold text-primary-foreground hover:bg-gold/90"
+          >
             {busy ? "Updating…" : "Update password"}
           </Button>
         </form>
