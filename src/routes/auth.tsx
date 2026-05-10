@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/auth")({ component: AuthPage });
 
@@ -19,6 +20,8 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetBusy, setResetBusy] = useState(false);
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault(); setBusy(true);
@@ -29,12 +32,32 @@ function AuthPage() {
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault(); setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email, password,
       options: { emailRedirectTo: `${window.location.origin}/dashboard`, data: { full_name: name } },
     });
     setBusy(false);
-    if (error) toast.error(error.message); else toast.success("Account created — you're signed in.");
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    if (!data.session) {
+      toast.success("Account created. Email verify karke phir sign in kariye.");
+      return;
+    }
+
+    toast.success("Account created — you're signed in.");
+  };
+
+  const sendReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetBusy(false);
+    if (error) toast.error(error.message); else toast.success("Password reset email sent.");
   };
 
   return (
@@ -54,6 +77,27 @@ function AuthPage() {
               <div><Label>Email</Label><Input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} /></div>
               <div><Label>Password</Label><Input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} /></div>
               <Button disabled={busy} className="w-full bg-gold text-primary-foreground hover:bg-gold/90">{busy ? "Signing in…" : "Sign In"}</Button>
+              <div className="text-center">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button type="button" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Forgot password?</button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Reset password</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={sendReset} className="space-y-4">
+                      <div>
+                        <Label>Email</Label>
+                        <Input type="email" required value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} />
+                      </div>
+                      <Button disabled={resetBusy} className="w-full bg-gold text-primary-foreground hover:bg-gold/90">
+                        {resetBusy ? "Sending…" : "Send reset link"}
+                      </Button>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </form>
           </TabsContent>
           <TabsContent value="signup">
