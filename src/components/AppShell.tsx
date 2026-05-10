@@ -27,6 +27,13 @@ export function AppShell() {
 
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 
+  useEffect(() => {
+    if (loading || !session || isStaff || retrying) return;
+
+    setRetrying(true);
+    void refreshRoles().finally(() => setRetrying(false));
+  }, [loading, session, isStaff, retrying, refreshRoles]);
+
   if (loading) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading…</div>;
   if (!session) return null;
 
