@@ -15,10 +15,11 @@ const NAV = [
 ] as const;
 
 export function AppShell() {
-  const { session, loading, isStaff, isOwner, signOut, user } = useAuth();
+  const { session, loading, isStaff, isOwner, signOut, user, refreshRoles } = useAuth();
   const navigate = useNavigate();
   const loc = useLocation();
   const [open, setOpen] = useState(false);
+  const [retrying, setRetrying] = useState(false);
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth" });
@@ -34,8 +35,21 @@ export function AppShell() {
       <div className="min-h-screen flex items-center justify-center px-6 text-center">
         <div className="glass rounded-2xl p-8 max-w-md">
           <h2 className="display text-2xl font-bold gradient-gold-text">Access Pending</h2>
-          <p className="text-muted-foreground mt-3">Your account is signed in but doesn't have access yet. Ask the owner to grant you Manager access.</p>
-          <Button onClick={signOut} variant="outline" className="mt-6">Sign out</Button>
+          <p className="text-muted-foreground mt-3">Aap signed in ho, lekin access sync nahi hua ya manager access abhi assign nahi hua. Ek baar retry karke dekho.</p>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              onClick={async () => {
+                setRetrying(true);
+                await refreshRoles();
+                setRetrying(false);
+              }}
+              className="bg-gold text-primary-foreground hover:bg-gold/90"
+              disabled={retrying}
+            >
+              {retrying ? "Retrying…" : "Retry access"}
+            </Button>
+            <Button onClick={signOut} variant="outline">Sign out</Button>
+          </div>
         </div>
       </div>
     );
