@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -89,6 +89,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loading = loadingSession || loadingRoles;
 
+  const refreshRoles = useCallback(async () => {
+    setLoadingRoles(true);
+    const nextRoles = await loadRoles(session?.user?.id);
+    setRoles(nextRoles);
+    setLoadingRoles(false);
+  }, [session?.user?.id]);
+
   const value: AuthState = {
     session,
     user: session?.user ?? null,
@@ -97,12 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isStaff: roles.includes("owner") || roles.includes("manager"),
     isOwner: roles.includes("owner"),
     signOut: async () => { await supabase.auth.signOut(); },
-    refreshRoles: async () => {
-      setLoadingRoles(true);
-      const nextRoles = await loadRoles(session?.user?.id);
-      setRoles(nextRoles);
-      setLoadingRoles(false);
-    },
+    refreshRoles,
   };
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
